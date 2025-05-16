@@ -32,7 +32,6 @@ export default function SprintManager({
   const {
     fn: updateStatus,
     loading,
-    error,
     data: updatedStatus,
   } = useFetch(updateSprintStatus);
 
@@ -50,14 +49,14 @@ export default function SprintManager({
   };
 
   useEffect(() => {
-    if (updatedStatus && updatedStatus.success) {
-      setStatus(updatedStatus.sprint.status);
-      setSprint({
-        ...sprint,
-        status: updatedStatus.sprint.status,
-      });
-    }
-  }, [updatedStatus, loading]);
+  if (updatedStatus && updatedStatus.success) {
+    setStatus(updatedStatus.sprint.status);
+    setSprint((prevSprint) => ({
+      ...prevSprint,
+      status: updatedStatus.sprint.status,
+    }));
+  }
+}, [updatedStatus, loading, setSprint]);
 
   const getStatusText = () => {
     if (status === "COMPLETED") {
@@ -73,15 +72,16 @@ export default function SprintManager({
   };
 
   useEffect(() => {
-    const sprintId = searchParams.get("sprint");
-    if (sprintId && sprintId !== sprint.id) {
-      const selectedSprint = sprints.find((s) => s.id === sprintId);
-      if (selectedSprint) {
-        setSprint(selectedSprint);
-        setStatus(selectedSprint.status);
-      }
+  const sprintId = searchParams.get("sprint");
+  if (sprintId && sprintId !== sprint.id) {
+    const selectedSprint = sprints.find((s) => s.id === sprintId);
+    if (selectedSprint) {
+      setSprint(selectedSprint);
+      setStatus(selectedSprint.status);
     }
-  }, [searchParams, sprints]);
+  }
+}, [searchParams, sprints, sprint.id, setSprint]);
+
 
   const handleSprintChange = (value) => {
     const selectedSprint = sprints.find((s) => s.id === value);

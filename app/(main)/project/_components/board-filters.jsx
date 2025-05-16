@@ -34,8 +34,8 @@ export default function BoardFilters({ issues, onFilterChange }) {
           selectedAssignees.includes(issue.assignee?.id)) &&
         (selectedPriority === "" || issue.priority === selectedPriority)
     );
-    onFilterChange(filteredIssues);
-  }, [searchTerm, selectedAssignees, selectedPriority, issues]);
+  onFilterChange(filteredIssues);
+}, [searchTerm, selectedAssignees, selectedPriority, issues, onFilterChange]);
 
   const toggleAssignee = (assigneeId) => {
     setSelectedAssignees((prev) =>

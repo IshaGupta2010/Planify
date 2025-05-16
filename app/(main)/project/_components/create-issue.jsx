@@ -62,11 +62,12 @@ export default function IssueCreationDrawer({
     },
   });
 
-  useEffect(() => {
-    if (isOpen && orgId) {
-      fetchUsers(orgId);
-    }
-  }, [isOpen, orgId]);
+ useEffect(() => {
+  if (isOpen && orgId) {
+    fetchUsers(orgId);
+  }
+}, [isOpen, orgId, fetchUsers]);
+
 
   const onSubmit = async (data) => {
     await createIssueFn(projectId, {
